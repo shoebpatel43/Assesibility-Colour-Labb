@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traffic Junction Simulator</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">TJ</span><span>Traffic<span class="brand-light">Lab</span></span></a>
+    <span class="top-tag">INDIAN ROAD SYSTEMS · SIMULATION LAB</span>
+    <button id="resetTop" class="ghost-btn">↻ Reset simulation</button>
+  </header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">URBAN MOBILITY / LIVE MODEL</p><h1>Make traffic<br><em>move smarter.</em></h1><p class="intro">A live four-way junction simulator. Change traffic demand, compare signal strategies, and see how small timing changes affect the flow.</p>
+        <div class="hero-tags"><span>● Fixed & adaptive signals</span><span>● Collision-aware queues</span><span>● Live traffic metrics</span></div>
+      </div>
+      <div class="hero-note"><div class="note-icon">↗</div><small>SIMULATION STATUS</small><strong id="statusHero">Running</strong><p>Virtual traffic · No real-world data required</p><div class="status-line"><i></i><span>Simulation engine active</span></div></div>
+    </section>
+    <section class="workspace">
+      <div class="section-head"><div><p class="eyebrow">01 / LIVE JUNCTION</p><h2>Intersection control room</h2><p class="sub">Top-down view · Cars stop at red and queue safely behind the stop line.</p></div><div class="live-pill"><i></i> LIVE SIMULATION</div></div>
+      <div class="sim-layout">
+        <div class="canvas-shell">
+          <div class="canvas-toolbar"><span><b class="dot"></b> Junction A-01 · Four-way signal</span><span id="clock">00:00</span></div>
+          <canvas id="junction" aria-label="Animated top-down four-way traffic junction"></canvas>
+          <div class="canvas-legend"><span><i class="legend-car"></i> Vehicle</span><span><i class="legend-green"></i> Green · Go</span><span><i class="legend-amber"></i> Amber · Clear</span><span><i class="legend-red"></i> Red · Stop</span></div>
+        </div>
+        <aside class="controls">
+          <div class="control-title"><div><small>SIMULATION CONTROLS</small><h3>Traffic settings</h3></div><span class="settings-icon">☷</span></div>
+          <label class="control-label" for="spawnRate">Vehicle spawn rate <strong id="spawnValue">2.0 / sec</strong></label>
+          <input id="spawnRate" type="range" min="0.2" max="8" step="0.2" value="2">
+          <div class="range-ends"><span>Light traffic</span><span>Rush hour</span></div>
+          <label class="control-label" for="cycleLength">Fixed green duration <strong id="cycleValue">10 sec</strong></label>
+          <input id="cycleLength" type="range" min="5" max="25" step="1" value="10">
+          <div class="range-ends"><span>Short cycle</span><span>Long cycle</span></div>
+          <div class="control-label">Signal strategy</div>
+          <div class="mode-switch"><button id="fixedMode" class="mode active" aria-pressed="true">Fixed timing</button><button id="adaptiveMode" class="mode" aria-pressed="false">Adaptive</button></div>
+          <p class="control-hint" id="modeHint">Each direction receives the same green duration in sequence.</p>
+          <div class="control-buttons"><button id="pauseBtn" class="primary-btn">Ⅱ Pause</button><button id="resumeBtn" class="secondary-btn" disabled>▶ Resume</button><button id="resetBtn" class="secondary-btn">↻ Reset</button></div>
+          <button id="emergencyBtn" class="emergency-btn">✚ Trigger emergency vehicle</button>
+          <p class="emergency-note">Demo feature: an emergency vehicle requests a protected green corridor.</p>
+        </aside>
+      </div>
+    </section>
+    <section class="stats-section"><div class="section-head"><div><p class="eyebrow">02 / PERFORMANCE</p><h2>Traffic performance</h2><p class="sub">Statistics update as vehicles move through the intersection.</p></div><span class="stat-note">Resets with the simulation</span></div>
+      <div class="stats-grid">
+        <article class="stat-card"><span class="stat-icon purple">↗</span><small>VEHICLES PASSED</small><strong id="passedStat">0</strong><p>Total vehicles that cleared the junction</p></article>
+        <article class="stat-card"><span class="stat-icon amber">◷</span><small>AVG. WAITING TIME</small><strong id="waitStat">0.0 <i>sec</i></strong><p>Average time spent waiting per vehicle</p></article>
+        <article class="stat-card"><span class="stat-icon green">⇄</span><small>CURRENT QUEUE</small><strong id="queueStat">0</strong><p>Vehicles waiting at all stop lines</p></article>
+        <article class="stat-card"><span class="stat-icon blue">⚡</span><small>THROUGHPUT</small><strong id="throughputStat">0.0 <i>/ min</i></strong><p>Vehicles cleared per simulated minute</p></article>
+      </div>
+    </section>
+    <section class="queues-section"><div class="section-head"><div><p class="eyebrow">03 / DIRECTIONAL VIEW</p><h2>Queue by approach</h2></div><span class="sub">N / E / S / W approaches</span></div>
+      <div class="queue-grid" id="queueCards"></div>
+    </section>
+    <section class="comparison" id="comparison"><div><p class="eyebrow">STRETCH GOAL / STRATEGY COMPARISON</p><h2>Is adaptive timing helping?</h2><p>Compare the current run with a simple fixed-timing baseline under the same traffic demand. This is an illustrative benchmark, not a second live simulation.</p></div><div class="compare-results"><div><small>FIXED BASELINE ESTIMATE</small><strong id="fixedEstimate">—</strong><span>vehicles / min</span></div><div><small>YOUR CURRENT RUN</small><strong id="currentEstimate">0.0</strong><span>vehicles / min</span></div><div><small>DIFFERENCE</small><strong id="deltaEstimate">—</strong><span id="deltaCaption">Run for 30 seconds to compare</span></div></div></section>
+    <footer><span>TRAFFICLAB · EDUCATIONAL SIMULATION</span><span>Fixed-step movement · Canvas rendering · Illustrative model, not traffic engineering advice</span></footer>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
